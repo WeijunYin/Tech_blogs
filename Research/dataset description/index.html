@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    
+    <link rel="shortcut icon" href="../../img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>Dataset description - Wei-Jun Yin's Blog</title>
+    <link href="../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "Wind Power Generation Dataset", url: "#_top", children: [
+          ]},
+          {title: "\u98ce\u529b\u529f\u7387\u6570\u636e\u96c6\u7684\u4e00\u4e9b\u7279\u70b9", url: "#_1", children: [
+              {title: "Sample Time", url: "#sample-time" },
+              {title: "Evaluation", url: "#evaluation" },
+              {title: "Caveats about the data", url: "#caveats-about-the-data" },
+          ]},
+        ];
+
+    </script>
+    <script src="../../js/base.js"></script>
+      <script src="../../javascripts/mathjax.js"></script>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    
+
+    <h2 id="wind-power-generation-dataset">Wind Power Generation Dataset<a class="headerlink" href="#wind-power-generation-dataset" title="Permanent link">#</a></h2>
+<h2 id="_1">风力功率数据集的一些特点<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
+<h3 id="sample-time">Sample Time<a class="headerlink" href="#sample-time" title="Permanent link">#</a></h3>
+<p>These data is collected from the Supervisory Control and Data Acquisition (SCADA) system. The SCADA data are sampled every 10 minutes from each wind turbine in the wind farm which consists of 134 wind turbines. The statistic of this dataset is shown below.</p>
+<table>
+<thead>
+<tr>
+<th>Days</th>
+<th>Interval</th>
+<th># of columns</th>
+<th># of turbines</th>
+<th># of records</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>245</td>
+<td>10minutes</td>
+<td>13</td>
+<td>134</td>
+<td>4,727,520</td>
+</tr>
+</tbody>
+</table>
+<p>This dataset includes critical external features, such as wind speed, wind direction, and external temperature, that influence the wind power generation; as well as essential internal features, such as the inside temperature, nacelle direction and Pitch angle of blades, which can indicate the operating status of each wind turbine.  </p>
+<h3 id="evaluation">Evaluation<a class="headerlink" href="#evaluation" title="Permanent link">#</a></h3>
+<p>We aim at addressing the forecasting ahead of 48 hours. Fore example, given at 6:00 A.M. today, it is required to effectively forecast the wind power generation beginning from 6:00 A.M. on this day to 5:50 AM on the day after tomorrow, given a series of historical records of the wind farm and the related wind turbines. It is required to output the predicted values every 10 minutes. To be specific, at one time point, it is required to predict a future length-280 wind power supply time-series. The average of RMSE (Root Mean Square Error) and MAE (Mean Absolute Error) is used as the main evaluation score. </p>
+<h3 id="caveats-about-the-data">Caveats about the data<a class="headerlink" href="#caveats-about-the-data" title="Permanent link">#</a></h3>
+<ul>
+<li>
+<p>Zero values (if active power and reactive power &lt;0, make them zero)</p>
+</li>
+<li>
+<p>Missing values </p>
+</li>
+<li>
+<p>Unknown values (In some time, the wind turbines are stopped to generate power by external reasons such as wind turbine renovation and/or actively scheduling the powering to avoid overloading the grid; if <span class="arithmatex">\(P a t v \leq 0\)</span> and <span class="arithmatex">\(W s p d&gt;2.5\)</span>, then power is unknown ); if <span class="arithmatex">\(P a b 1&gt;89^{\circ}\)</span> or <span class="arithmatex">\(P a b 2&gt;89^{\circ}\)</span> or <span class="arithmatex">\(P a b 3&gt;89^{\circ}\)</span>, then the actual active power of this wind is unknown.</p>
+</li>
+<li>
+<p>Abnormal values  (Nidir <span class="arithmatex">\(&gt;720^{\circ}\)</span> or Nidir <span class="arithmatex">\(&lt;-720^{\circ}\)</span>, then the actual active power is unknown; Widr <span class="arithmatex">\(&gt;180^{\circ}\)</span> or Widr <span class="arithmatex">\(&lt;-180^{\circ}\)</span>, then the actual active power is unknown.)</p>
+</li>
+</ul>
+
+  <br>
+    
+
+    <br>
+</div>
+
+<footer class="container-fluid wm-page-content">
+  <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a> using <a href="https://github.com/gristlabs/mkdocs-windmill">Windmill</a> theme by Grist Labs.</p>
+</footer>
+
+</body>
+</html>

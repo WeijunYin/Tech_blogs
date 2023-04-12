@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    
+    <link rel="shortcut icon" href="../../img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>Linear Regression - Wei-Jun Yin's Blog</title>
+    <link href="../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "Linear Regression", url: "#_top", children: [
+              {title: "\u57fa\u672c\u539f\u7406", url: "#_1" },
+          ]},
+        ];
+
+    </script>
+    <script src="../../js/base.js"></script>
+      <script src="../../javascripts/mathjax.js"></script>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    
+
+    <h2 id="linear-regression">Linear Regression<a class="headerlink" href="#linear-regression" title="Permanent link">#</a></h2>
+<p>Linear Regression线性回归，算是一种简单的时间序列预测的方法，这里我使用pytorch去实现这类算法。</p>
+<h3 id="_1">基本原理<a class="headerlink" href="#_1" title="Permanent link">#</a></h3>
+<p>Assume our prediction <span class="arithmatex">\(\hat{z}_t\)</span> is a weighted combination of features <span class="arithmatex">\(x_{t, 1}, \ldots, x_{t, D}\)</span>,
+$$
+\widehat{z}<em>t=\sum</em>{d=1}^D w_d x_{t, d}
+$$
+The features <span class="arithmatex">\(x_{t, d}\)</span> are assumed to be given (= hand designed)</p>
+<h4 id="goal-find-weights-w_1-ldots-w_d-so-that-our-prediction-hatz_t-is-close-to-the-true-z_t-here-we-use-least-square-method">Goal: find weights <span class="arithmatex">\(w_1, \ldots, w_D\)</span> so that our prediction <span class="arithmatex">\(\hat{z}_t\)</span> is close to the true <span class="arithmatex">\(z_t\)</span>. Here we use Least square method<a class="headerlink" href="#goal-find-weights-w_1-ldots-w_d-so-that-our-prediction-hatz_t-is-close-to-the-true-z_t-here-we-use-least-square-method" title="Permanent link">#</a></h4>
+<p><span class="arithmatex">\(w^{\star}=\underset{w}{\operatorname{argmin}} \sum_{t=1}^T\left(z_t-\widehat{z}_t\right)^2=\sum_{t=1}^T\left(z_t-\sum_{d=1}^D w_d x_{t, d}\right)^2\)</span> </p>
+<p>Then we can use this to make forecasts:
+$$
+z_t=\sum_{d=1}^D w_d^{\star} x_{t, d} \quad t=T+1, \ldots, T+h
+$$
+<strong>注意这并不是一个神经网络模型，所以不需要Dataloader</strong></p>
+<p>这里经常使用的特征
+$$
+x_{1, d}, x_{2, d}, \ldots, x_{T+H, d}
+$$
+有如下的特征：</p>
+<ul>
+<li>Trend Feature (linear, logarithmic, exponential, logistic)</li>
+<li>Seasonal features: dummies (one-hot indicators), periodic features (Fourier, wavelet, etc)</li>
+<li>Lagged target value (e.g use <span class="arithmatex">\(z_{t-1}\)</span> and <span class="arithmatex">\(z_{t-2}\)</span> as features to predict <span class="arithmatex">\(z_t\)</span> )</li>
+<li>Seasonal lagged target values (e.g use <span class="arithmatex">\(z_{t-S}\)</span> to predict <span class="arithmatex">\(z_t\)</span>, with <span class="arithmatex">\(S=12\)</span> for monthly data )</li>
+<li>(Weighted) average features (e.g. <span class="arithmatex">\(\operatorname{mean}\left(z_{t-7: t-1}\right)\)</span> )</li>
+</ul>
+<p>代码实现：</p>
+<pre><code class="language-python">import torch
+import numpy as np
+import matplotlib.pyplot as plt
+
+X = torch.arange(-5, 5, 0.1).view(-1, 1)
+func = -5 * X
+Y = func + 0.4 * torch.randn(X.size())
+
+# defining the function for forward pass for prediction
+def forward(x):
+    return w * x
+
+# evaluating data points with Mean Square Error
+def criterion(y_pred, y):
+    return torch.mean((y_pred - y) ** 2)
+
+w = torch.tensor(-10.0, requires_grad=True)
+
+step_size = 0.1
+loss_list = []
+iter = 20
+
+for i in range (iter):
+    # making predictions with forward pass
+    Y_pred = forward(X)
+    # calculating the loss between original and predicted data points
+    loss = criterion(Y_pred, Y)
+    # storing the calculated loss in a list
+    loss_list.append(loss.item())
+    # backward pass for computing the gradients of the loss w.r.t to learnable parameters
+    loss.backward()
+    # updateing the parameters after each iteration
+    w.data = w.data - step_size * w.grad.data
+    # zeroing gradients after each iteration
+    w.grad.data.zero_()
+    # priting the values for understanding
+    print('{},\t{},\t{}'.format(i, loss.item(), w.item()))
+
+# Plotting the loss after each iteration
+plt.plot(loss_list, 'r')
+plt.tight_layout()
+plt.grid('True', color='y')
+plt.xlabel(&quot;Epochs/Iterations&quot;)
+plt.ylabel(&quot;Loss&quot;)
+plt.show()
+</code></pre>
+<p>如果考虑偏置
+$$
+\widehat{z}<em>t=\sum</em>{d=1}^D w_d x_{t, d}+b
+$$
+则此时我们需要对<span class="arithmatex">\(w\)</span>, <span class="arithmatex">\(b\)</span> 分别更新步长，代码如下：</p>
+<pre><code class="language-python">import torch
+import numpy as np
+import matplotlib.pyplot as plt
+
+X = torch.arange(-5, 5, 0.1).view(-1, 1)
+func = -5 * X
+Y = func + 0.4 * torch.randn(X.size())
+
+# defining the function for forward pass for prediction
+def forward(x):
+    return w * x + b
+
+# evaluating data points with Mean Square Error.
+def criterion(y_pred, y):
+    return torch.mean((y_pred - y) ** 2)
+
+w = torch.tensor(-10.0, requires_grad=True)
+b = torch.tensor(-20.0, requires_grad=True)
+
+step_size = 0.1
+loss_list = []
+iter = 20
+
+for i in range (iter):    
+    # making predictions with forward pass
+    Y_pred = forward(X)
+    # calculating the loss between original and predicted data points
+    loss = criterion(Y_pred, Y)
+    # storing the calculated loss in a list
+    loss_list.append(loss.item())
+    # backward pass for computing the gradients of the loss w.r.t to learnable parameters
+    loss.backward()
+    # updateing the parameters after each iteration
+    w.data = w.data - step_size * w.grad.data
+    b.data = b.data - step_size * b.grad.data
+    # zeroing gradients after each iteration
+    w.grad.data.zero_()
+    b.grad.data.zero_()
+    # priting the values for understanding
+    print('{}, \t{}, \t{}, \t{}'.format(i, loss.item(), w.item(), b.item()))
+
+# Plotting the loss after each iteration
+plt.plot(loss_list, 'r')
+plt.tight_layout()
+plt.grid('True', color='y')
+plt.xlabel(&quot;Epochs/Iterations&quot;)
+plt.ylabel(&quot;Loss&quot;)
+plt.show()
+</code></pre>
+
+  <br>
+    
+
+    <br>
+</div>
+
+<footer class="container-fluid wm-page-content">
+  <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a> using <a href="https://github.com/gristlabs/mkdocs-windmill">Windmill</a> theme by Grist Labs.</p>
+</footer>
+
+</body>
+</html>

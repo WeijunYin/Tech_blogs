@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    
+    <link rel="shortcut icon" href="../../img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>Paper Title Deterministic and Probabilistic Wind Power Forecasts by Considering Various Atmospheric Models and Feature - Wei-Jun Yin's Blog</title>
+    <link href="../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "Paper 1 title:", url: "#_top", children: [
+          ]},
+          {title: "Paper 2 Title:", url: "#paper-2-title", children: [
+          ]},
+          {title: "", url: "#_1", children: [
+          ]},
+        ];
+
+    </script>
+    <script src="../../js/base.js"></script>
+      <script src="../../javascripts/mathjax.js"></script>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    
+
+    <h3 id="paper-1-title">Paper 1 title:<a class="headerlink" href="#paper-1-title" title="Permanent link">#</a></h3>
+<p><strong><em>Deterministic and Probabilistic Wind Power Forecasts by Considering Various Atmospheric Models and Feature Engineering Approaches</em></strong></p>
+<p>Executive summary: The authors use three kind of numerical weather prediction (wind speed) rather than the single wind speed from the anemometer to serve as the feature engineering. The kernel of this paper is to use the specific data source to construct the feature and hence. <strong>What is useful for me is that we can consider the feature engineering in our work and cite this to alleviate the boring description</strong>. For reference, I think the following reference are of value:</p>
+<ul>
+<li>A New Fuzzy-Based Combined Prediction Interval for Wind Power Forecasting</li>
+</ul>
+<p>Technical description:</p>
+<p><strong>PI coverage probability</strong>: show the percentage of the probability targets which will be covered by the upper and lower bound.
+$$
+\mathrm{PICP}=\frac{1}{N} \sum_{t=1}^N c_t
+$$
+where <span class="arithmatex">\(N\)</span> is the number of samples and <span class="arithmatex">\(c_t\)</span> is a Boolean value that is evaluated as follows:
+$$
+c_t= \begin{cases}1, &amp; y_t \in\left[L_t, U_t\right] \ 0, &amp; y_t \notin\left[L_t, U_t\right]\end{cases}
+$$
+where <span class="arithmatex">\(y_t\)</span> is the forecast target and <span class="arithmatex">\(U_t\)</span> and <span class="arithmatex">\(L_t\)</span> are upper and lower bounds of the interval, respectively. </p>
+<p><strong>PI normalized average width (PINAW):</strong> limit the high extra growth of the interval
+$$
+\text { PINAW }=\frac{1}{N R} \sum_{t=1}^N\left(U_t-L_t\right)
+$$
+where <span class="arithmatex">\(R\)</span> is the range of the underlying targets used for normalizing PIs.</p>
+<p>The LUBE method could be regarded as a constrained nonlinear optimization problem with conflicting objective as follows:</p>
+<p>Objectives :
+                                                                Maximize: <span class="arithmatex">\(\operatorname{PICP}(w)\)</span>
+                                                                Minimize: PINAW <span class="arithmatex">\((w)\)</span>
+Constraints :
+$$
+0 \leq \operatorname{PICP}(w) \leq 100 \%
+$$
+​                                                                       PINAW <span class="arithmatex">\((w) \succ 0\)</span></p>
+<p>This is resolved by the following method:
+$$
+\begin{aligned}
+&amp; F(X)=\min <em>{X \in \Omega}\left{\max </em>{i=1, \ldots, n}\left|\mu_{\text {ref }, i}-\mu_{f, i}(X)\right|\right} \
+&amp;=\min <em>{X \in \Omega}\left{\operatorname { m a x } \left(\left|\mu</em>{\text {ref }, \mathrm{PICP}}-\mu_{\mathrm{PICP}}(X)\right|\right.\right. \
+&amp;\left.\left.\left|\mu_{\text {ref }, \mathrm{PINAW}}-\mu_{\mathrm{PNAW}}(X)\right|\right)\right}
+\end{aligned}
+$$
+where <span class="arithmatex">\(n\)</span> is the number of objectives (here <span class="arithmatex">\(n=2\)</span> ), <span class="arithmatex">\(\mu_{f, i}\)</span> is the membership function value of the <span class="arithmatex">\(i\)</span> th objective, <span class="arithmatex">\(\Omega\)</span> is the problem search space; <span class="arithmatex">\(X\)</span> is the control vector including the <span class="arithmatex">\(\mathrm{NN}\)</span> weighting factors, and <span class="arithmatex">\(\mu_{\mathrm{ref}, i}\)</span> is the reference membership value for <span class="arithmatex">\(i\)</span>-th objective. </p>
+<h3 id="paper-2-title">Paper 2 Title:<a class="headerlink" href="#paper-2-title" title="Permanent link">#</a></h3>
+<p><strong><em>Privacy-preserving Spatiotemporal Scenario Generation of Renewable Energies: A Federated Deep Generative Learning Approach</em></strong></p>
+<p>Executive summary: The authors want to use the federated learning with a central server to generate the scenarios for the wind power.  The authors use the federated learning and the least square generative adversarial networks (LSGANs) for renewable scenario generation.  <strong>What I think is useful for me is the concept of scenario generation and the application of federated learning.</strong>  There are some references that I think is interesting: </p>
+<p>Technical description:</p>
+<p><em>Generative adversarial networks</em>: GAN contains discriminator and generator, the generator is used to generated samples and the discriminator is used to judge the input data whether historical data or the generated data as much as possible. </p>
+<p><img alt="image-20230411154927902" src="../Image/image-20230411154927902.png" /></p>
+<p>then the output of the discriminator network is 
+$$
+\left{\begin{array}{l}
+p_{\text {real }}=D(\boldsymbol{x}) \
+p_{\text {fake }}=D(G(\boldsymbol{z}))
+\end{array}\right.
+$$
+and the loss function of generated and discriminator are 
+$$
+\begin{gathered}
+L_G=\mathbb{E}<em>{\boldsymbol{z} \sim P_Z}[\log (1-D(G(\boldsymbol{z})))] \
+L_D=-\mathbb{E}</em>{\boldsymbol{x} \sim P_d}[\log D(\boldsymbol{x})]-\mathbb{E}<em>{\boldsymbol{z} \sim P_d}[\log (1-D(G(\boldsymbol{z})))]
+\end{gathered}
+$$
+where <span class="arithmatex">\(P_Z\)</span> is a known distribution that is easy to sample. Then the mini-max game model with value function <span class="arithmatex">\(V_{\mathrm{GANs}}(G, D)\)</span> is given by 
+$$
+\begin{aligned}
+\min _G \max _D V</em>{\mathrm{GANs}}(G, D)= &amp; \mathbb{E}<em>{\boldsymbol{x} \sim P_d}[\log D(\boldsymbol{x})] \
+&amp; +\mathbb{E}</em>{\boldsymbol{z} \sim P_z}[\log (1-D(G(\boldsymbol{z})))]
+\end{aligned}
+$$
+Federated Learning: Suppose there are <span class="arithmatex">\(N\)</span> clients, i.e. participating edge devices <span class="arithmatex">\(\left\{\mathcal{C}_1, \mathcal{C}_2, \ldots, \mathcal{C}_N\right\}\)</span> based on their own dataset <span class="arithmatex">\(\left\{\mathcal{D}_1, \mathcal{D}_2, \ldots, \mathcal{D}_N\right\}\)</span> </p>
+<ul>
+<li>traditional way: put all data together and train a big model</li>
+<li>Federated learning coordinates clients to train a global model <span class="arithmatex">\(\mathcal{M}_{\mathrm{FED}}\)</span> deployed on a central server, not collecting all data.</li>
+</ul>
+<p><span class="arithmatex">\(\delta\)</span><em>-accuracy loss</em>: assuming that <span class="arithmatex">\(\mathcal{V}_{\text {SUM }}\)</span> and <span class="arithmatex">\(\mathcal{V}_{\mathrm{FED}}\)</span> are the performance metrics of the centralized model <span class="arithmatex">\(\mathcal{M}_{\text {SUM }}\)</span> and federated model <span class="arithmatex">\(\mathcal{M}_{\text {FED }}\)</span> , then <span class="arithmatex">\(\left|\mathcal{V}_{\mathrm{SUM}}-\mathcal{V}_{\mathrm{FED}}\right|&lt;\delta\)</span> </p>
+<p><img alt="image-20230411155759336" src="../Image/image-20230411155759336.png" /></p>
+<p><em>Global LSGANs Model</em>: </p>
+<ul>
+<li>
+<p>Traditionally, the generator is fixed, the optimal discriminator is as follows: 
+  $$
+  D_{G, \mathrm{GANs}}^*(\boldsymbol{x})=\frac{P_d(\boldsymbol{x})}{P_d(\boldsymbol{x})+P_g(\boldsymbol{x})}
+  $$</p>
+</li>
+<li>
+<p>New: Substitute the above equation into 
+  $$
+  \begin{aligned}
+  \min <em>G \max _D V</em>{\mathrm{GANs}}(G, D)= &amp; \mathbb{E}<em>{\boldsymbol{x} \sim P_d}[\log D(\boldsymbol{x})] \
+  &amp; +\mathbb{E}</em>{\boldsymbol{z} \sim P_z}[\log (1-D(G(\boldsymbol{z})))]
+  \end{aligned}
+  $$</p>
+</li>
+</ul>
+<p>then we could get 
+$$
+C_{\mathrm{GANs}}(G)=V\left(D_{D, \mathrm{GANs}}^<em>, G\right)=2 \mathrm{JSD}\left(P_d | P_g\right)-\log (4)
+$$
+There are some drawbacks of the GAN, then least square-GAN are proposed. use <span class="arithmatex">\(a-b\)</span> encoding and the least squares loss function, then the objective function of LSGAN is 
+$$
+\begin{gathered}
+\min <em>D V</em>{\mathrm{LSGANs}}(D)=\frac{1}{2} \mathbb{E}<em>{\boldsymbol{x} \sim P_d}\left[(D(\boldsymbol{x})-b)^2\right]+ \
+\frac{1}{2} \mathbb{E}</em>{\boldsymbol{z} \sim P_Z}\left[(D(G(\boldsymbol{z}))-a)^2\right] \
+\min <em>G V</em>{\mathrm{LSGANs}}(G)=\frac{1}{2} \mathbb{E}<em>{\boldsymbol{z} \sim P_Z}\left[(D(G(\boldsymbol{z}))-c)^2\right]
+\end{gathered}
+$$
+The for the generator <span class="arithmatex">\(G\)</span>, the optimal discriminator <span class="arithmatex">\(D\)</span> is 
+$$
+D</em>{G, \text { LSGANs }}^</em>(\boldsymbol{x})=\frac{b P_d(\boldsymbol{x})+a P_g(\boldsymbol{x})}{P_d(\boldsymbol{x})+P_g(\boldsymbol{x})}
+$$
+If we choose <span class="arithmatex">\(b-c=1\)</span> and <span class="arithmatex">\(b-a=2\)</span>, then we could get 
+$$
+2 C_{\mathrm{LSGANs}}(G)=\chi_{\text {Pearson }}^2\left(P_d+P_g | 2 P_g\right)
+$$
+where <span class="arithmatex">\(\chi_{\text {Pearson }}^2\)</span> is the Pearson <span class="arithmatex">\(\chi^2\)</span> divergence. If <span class="arithmatex">\(b-c=1\)</span> and <span class="arithmatex">\(b-a=2\)</span> are satisfied, (8) is equivalent to minimize the Pearson <span class="arithmatex">\(\chi^2\)</span> divergence. </p>
+<p><img alt="image-20230411160642653" src="../Image/image-20230411160642653.png" /></p>
+<p>network configuration: activation function,  ReLU and LeakyReLU activation functions</p>
+<hr />
+<p>Then we consider the FederatedAveraging (FedAvg) algorithm. This algorithm is proposed in this paper: <strong>Communication-Efficient Learning of Deep Networks from Decentralized Data</strong></p>
+<p>The major difference between federated optimization and distribution optimization.</p>
+<ul>
+<li>Non-IID: any particular user's local dataset will not be representative of the population distribution</li>
+<li>Unbalanced: Some users will make much heavier use of the service</li>
+<li>Massively distributed: </li>
+<li>Limited communication, Mobile devices are frequently offline or on slow or expensive connection. </li>
+</ul>
+<div class="arithmatex">\[
+\min _{w \in \mathbb{R}^d} f(w) \quad \text { where } \quad f(w) \stackrel{\text { def }}{=} \frac{1}{n} \sum_{i=1}^n f_i(w)
+\]</div>
+<p>For a machine learning problem, we typically take 
+$$
+f_i(w)= \ell\left(x_i, y_i ; w\right)
+$$
+We assume that there are <span class="arithmatex">\(K\)</span> clients and <span class="arithmatex">\(\mathcal{P}_k\)</span> the set of indexes of data points on client <span class="arithmatex">\(k\)</span>, with <span class="arithmatex">\(n_k = \lvert \mathcal{P}_k \rvert\)</span>, then 
+$$
+f(w)=\sum_{k=1}^K \frac{n_k}{n} F_k(w) \quad \text { where } \quad F_k(w)=\frac{1}{n_k} \sum_{i \in \mathcal{P}<em>k} f_i(w) \text {. }
+$$
+ three key parameters: <span class="arithmatex">\(C\)</span>, the fraction of clients that perform computation on each round; <span class="arithmatex">\(E\)</span>, then number of training passes each client makes over its local dataset on each round; and <span class="arithmatex">\(B\)</span>, the local minibatch size used for the client updates. We write <span class="arithmatex">\(B=\infty\)</span> to indicate that the full data are used. 
+$$
+\begin{aligned}
+&amp; \hline \text { Algorithm } 1 \text { FederatedAveraging. The } K \text { clients are } \
+&amp; \text { indexed by } k ; B \text { is the local minibatch size, } E \text { is the number } \
+&amp; \text { of local epochs, and } \eta \text { is the learning rate. } \
+&amp; \hline \text { Server executes: } \
+&amp; \text { initialize } w_0 \
+&amp; \text { for each round } t=1,2, \ldots \text { do } \
+&amp; \quad m \leftarrow \max (C \cdot K, 1) \
+&amp; \quad S_t \leftarrow(\operatorname{random} \text { set of } m \text { clients) } \
+&amp; \quad \text { for each client } k \in S_t \text { in parallel do } \
+&amp; \quad w</em>{t+1}^k \leftarrow \text { ClientUpdate }\left(k, w_t\right) \
+&amp; \quad w_{t+1} \leftarrow \sum_{k=1}^K \frac{n_k}{n} w_{t+1}^k \
+&amp; \text { ClientUpdate }(k, w): / / \text { Run on client } k \
+&amp; \mathcal{B} \leftarrow\left(\text { split } \mathcal{P}_k \text { into batches of size } B\right) \
+&amp; \text { for each local epoch } i \text { from } 1 \text { to } E \text { do } \
+&amp; \text { for batch } b \in \mathcal{B} \text { do } \
+&amp; \quad w \leftarrow w-\eta \nabla \ell(w ; b) \
+&amp; \text { return } w \text { to server }
+\end{aligned}
+$$</p>
+<hr />
+<p>Then the algorithm could be (there is no contribution, except the GANs optimization part.)</p>
+<p><span class="arithmatex">\(\overline{\text { Algorithm } 1 \text { Federated Least Squares Generative Adversarial }}\)</span> Networks (Fed-LSGAN)
+Require: Learning rate <span class="arithmatex">\(\alpha\)</span>; Adam hyperparameters <span class="arithmatex">\(\beta_1, \beta_2\)</span>; Local minibatch size <span class="arithmatex">\(m\)</span>; Global epoch <span class="arithmatex">\(W\)</span>; Synchronization interval <span class="arithmatex">\(K\)</span>, Client ratio <span class="arithmatex">\(E\)</span>.
+Require: A global LSGANs model with parameters <span class="arithmatex">\(\left(\theta_g^{\mathcal{S}}, \theta_d^{\mathcal{S}}\right)\)</span> for Discriminator and Generator on central server <span class="arithmatex">\(\mathcal{S}\)</span>; local LSGANs models with parameters <span class="arithmatex">\(\left\{\theta_g, \theta_d\right\}_{i=1}^{N_r}\)</span> on <span class="arithmatex">\(N_r\)</span> clients <span class="arithmatex">\(\{\mathcal{C}\}_{i=1}^{N_r}\)</span>.
+8: Update generator <span class="arithmatex">\(\theta_g^e\)</span> of client <span class="arithmatex">\(e\)</span>
+- Sample batch noise samples <span class="arithmatex">\(\{z\}_{i=1}^m \sim P_Z\)</span>.
+- Update parameters for generator network
+$$
+\left{\begin{array}{l}
+g_{\theta_g} \leftarrow \nabla_{\theta_g} \frac{1}{m} \sum_{i=1}^m \frac{1}{2}\left(D\left(G\left(z^{(i)}\right)\right)-1\right)^2 \
+\theta_g \leftarrow \theta_g-\alpha \cdot \operatorname{Adam}\left(\theta_g, g_{\theta_g}, \beta_1, \beta_2\right)
+\end{array}\right.
+$$
+11: end for
+12: <span class="arithmatex">\(\quad\)</span> if <span class="arithmatex">\(w \bmod K=0\)</span> then
+13: All selected clients send parameters to server, and the server aggregate <span class="arithmatex">\(\theta^{\mathcal{S}}\)</span> by averaging
+$$
+\theta_g^S \leftarrow \frac{1}{N_e} \sum_{e=1}^{N_e} \theta_g^e, \quad \theta_d^{\mathcal{S}} \leftarrow \frac{1}{N_e} \sum_{e=1}^{N_e} \theta_d^e
+$$
+14: The server send back parameters and clients update local parameters
+$$
+\left{\theta_g, \theta_d\right}_{i=1}^{N_r} \leftarrow\left(\theta_g^{\mathcal{S}}, \theta_d^{\mathcal{S}}\right)
+$$
+15: end if</p>
+<hr />
+<p>Metric: Performance metric</p>
+<p><strong><em>Correlation Analysis:</em></strong> 
+$$
+R(\tau)=\frac{\mathbb{E}\left[\left(S_t-\mu\right)\left(S_{t+\tau}-\mu\right)\right]}{\sigma^2}
+$$
+where <span class="arithmatex">\(S\)</span> is a random time series; <span class="arithmatex">\(\mu\)</span> and <span class="arithmatex">\(\sigma\)</span> denote the mean and variance of <span class="arithmatex">\(S\)</span>, respectively; and <span class="arithmatex">\(\tau\)</span> is the time lag.</p>
+<p>We use the <strong>continuous ranked probability score</strong> (<strong>CRPS</strong>) which measures the dissimilarity of the cumulative distributions between generated scenarios and historical observations. </p>
+<p>The score at lead time <span class="arithmatex">\(\ell\)</span> is defined as 
+$$
+\operatorname{CRPS}<em>l=\frac{1}{M} \sum</em>{t=1}^M \int_0^1\left(\widehat{F}<em>{t+l \mid t}(\xi)-\mathbf{1}\left(\xi \geq \xi</em>{t+l}\right)\right)^2 d \xi
+$$
+where <span class="arithmatex">\(M\)</span> is the total number of scenarios, <span class="arithmatex">\(\widehat{F}_{t+l \mid t}(\xi)\)</span> denotes the cumulative distribution function of normalized scenario, and <span class="arithmatex">\(\mathbf{1}\left(\xi \geq \xi_{t+l}\right)\)</span> is the indicator function for comparing scenarios and observation. </p>
+<p><strong><em>Fréchet inception Distance</em></strong> (FID)
+$$
+\operatorname{FID}\left(P_d, P_g\right)=\left|\mu_d-\mu_g\right|+\operatorname{Tr}\left(\Sigma_d+\Sigma_g-2\left(\Sigma_d \Sigma_g\right)^{\frac{1}{2}}\right)
+$$
+where <span class="arithmatex">\(\mu_d\)</span> and <span class="arithmatex">\(\mu_g\)</span> represent the empirical mean; <span class="arithmatex">\(\Sigma_d\)</span> and <span class="arithmatex">\(\Sigma_g\)</span> are empirical covariance. </p>
+<p><strong><em>Kernel Maximum Mean Discrepancy (MMD):</em></strong> measures the difference between <span class="arithmatex">\(P_d\)</span> and <span class="arithmatex">\(P_g\)</span> for some fixed kernel function <span class="arithmatex">\(k\)</span>, which is defined as
+$$
+\operatorname{MMD}^2\left(P_d, P_g\right)=\underset{\substack{x, x^{\prime} \sim P_d \ y, y^{\prime} \sim P_g}}{ }\left[k\left(x, x^{\prime}\right)-2 k(x, y)+k\left(y, y^{\prime}\right)\right]
+$$
+<strong><em>The 1-Nearest Neighbor classifier</em></strong></p>
+<p><strong><em>Energy Score (ES)</em></strong>
+$$
+\mathrm{ES}=\frac{1}{M} \sum_{i=1}^M\left|\varsigma-\xi_i\right|-\frac{1}{2 M^2} \sum_{i=1}^M \sum_{j=1}^M\left|\xi_i-\xi_j\right|
+$$
+<span class="arithmatex">\(\varsigma\)</span> is the real renewable power output, <span class="arithmatex">\(\xi_i\)</span> is the <span class="arithmatex">\(i\)</span>-th generated time series scenario and <span class="arithmatex">\(M\)</span> denotes the number of scenarios. </p>
+<p>Pearson correlation coefficient <span class="arithmatex">\(\rho\)</span> of two time series <span class="arithmatex">\(S_i\)</span> and <span class="arithmatex">\(S_j\)</span> is 
+$$
+\rho\left(S_i, S_j\right)=\frac{\sum_{i=1}^n\left(S_i-\bar{S}<em>i\right)\left(S_j-\bar{S}_j\right)}{\sqrt{\sum</em>{i=1}^n\left(S_i-\bar{S}<em>i\right)^2} \sqrt{\sum</em>{i=1}^n\left(S_j-\bar{S}_j\right)^2}}
+$$</p>
+<h3 id="_1"><a class="headerlink" href="#_1" title="Permanent link">#</a></h3>
+
+  <br>
+    
+
+    <br>
+</div>
+
+<footer class="container-fluid wm-page-content">
+  <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a> using <a href="https://github.com/gristlabs/mkdocs-windmill">Windmill</a> theme by Grist Labs.</p>
+</footer>
+
+</body>
+</html>

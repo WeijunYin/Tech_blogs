@@ -36,8 +36,6 @@
           ]},
           {title: "Paper 2 Title:", url: "#paper-2-title", children: [
           ]},
-          {title: "", url: "#_1", children: [
-          ]},
         ];
 
     </script>
@@ -135,18 +133,19 @@ L_D=-\mathbb{E}_{\boldsymbol{x} \sim P_d}[\log D(\boldsymbol{x})]-\mathbb{E}_{\b
 <ul>
 <li>Traditionally, the generator is fixed, the optimal discriminator is as follows: </li>
 </ul>
-<p>$$
+<div class="arithmatex">\[
 D_{G, \mathrm{GANs}}^*(\boldsymbol{x})=\frac{P_d(\boldsymbol{x})}{P_d(\boldsymbol{x})+P_g(\boldsymbol{x})}
-  $$</p>
+\]</div>
 <ul>
 <li>New: Substitute the above equation into </li>
 </ul>
-<p>$$
-  \begin{aligned}
-  \min <em>G \max _D V</em>{\mathrm{GANs}}(G, D)= &amp; \mathbb{E}<em>{\boldsymbol{x} \sim P_d}[\log D(\boldsymbol{x})] \
-  &amp; +\mathbb{E}</em>{\boldsymbol{z} \sim P_z}[\log (1-D(G(\boldsymbol{z})))]
-  \end{aligned}
-  $$</p>
+<div class="arithmatex">\[
+\begin{gathered}
+\min _D V_{\mathrm{LSGANs}}(D)=\frac{1}{2} \mathbb{E}_{\boldsymbol{x} \sim P_d}\left[(D(\boldsymbol{x})-b)^2\right]+ \\
+\frac{1}{2} \mathbb{E}_{\boldsymbol{z} \sim P_Z}\left[(D(G(\boldsymbol{z}))-a)^2\right] \\
+\min _G V_{\mathrm{LSGANs}}(G)=\frac{1}{2} \mathbb{E}_{\boldsymbol{z} \sim P_Z}\left[(D(G(\boldsymbol{z}))-c)^2\right]
+\end{gathered}
+\]</div>
 <p>then we could get </p>
 <div class="arithmatex">\[
 C_{\mathrm{GANs}}(G)=V\left(D_{D, \mathrm{GANs}}^*, G\right)=2 \mathrm{JSD}\left(P_d \| P_g\right)-\log (4)
@@ -164,10 +163,10 @@ C_{\mathrm{GANs}}(G)=V\left(D_{D, \mathrm{GANs}}^*, G\right)=2 \mathrm{JSD}\left
 D_{G, \text { LSGANs }}^*(\boldsymbol{x})=\frac{b P_d(\boldsymbol{x})+a P_g(\boldsymbol{x})}{P_d(\boldsymbol{x})+P_g(\boldsymbol{x})}
 \]</div>
 <p>If we choose <span class="arithmatex">\(b-c=1\)</span> and <span class="arithmatex">\(b-a=2\)</span>, then we could get </p>
-<p>$$
-2 C_{\mathrm{LSGANs}}(G)=\chi_{\text {Pearson }}^2\left(P_d+P_g | 2 P_g\right)
-$$
-where <span class="arithmatex">\(\chi_{\text {Pearson }}^2\)</span> is the Pearson <span class="arithmatex">\(\chi^2\)</span> divergence. If <span class="arithmatex">\(b-c=1\)</span> and <span class="arithmatex">\(b-a=2\)</span> are satisfied, (8) is equivalent to minimize the Pearson <span class="arithmatex">\(\chi^2\)</span> divergence. </p>
+<div class="arithmatex">\[
+2 C_{\mathrm{LSGANs}}(G)=\chi_{\text {Pearson }}^2\left(P_d+P_g \| 2 P_g\right)
+\]</div>
+<p>where <span class="arithmatex">\(\chi_{\text {Pearson }}^2\)</span> is the Pearson <span class="arithmatex">\(\chi^2\)</span> divergence. If <span class="arithmatex">\(b-c=1\)</span> and <span class="arithmatex">\(b-a=2\)</span> are satisfied, (8) is equivalent to minimize the Pearson <span class="arithmatex">\(\chi^2\)</span> divergence. </p>
 <p><img alt="image-20230411160642653" src="../Image/image-20230411160642653.png" /></p>
 <p>network configuration: activation function,  ReLU and LeakyReLU activation functions</p>
 <hr />
@@ -198,56 +197,30 @@ f_i(w)= \ell\left(x_i, y_i ; w\right)
 <div class="arithmatex">\[
 f(w)=\sum_{k=1}^K \frac{n_k}{n} F_k(w) \quad \text { where } \quad F_k(w)=\frac{1}{n_k} \sum_{i \in \mathcal{P}_k} f_i(w) \text {. }
 \]</div>
-<p>three key parameters: <span class="arithmatex">\(C\)</span>, the fraction of clients that perform computation on each round; <span class="arithmatex">\(E\)</span>, then number of training passes each client makes over its local dataset on each round; and <span class="arithmatex">\(B\)</span>, the local minibatch size used for the client updates. We write <span class="arithmatex">\(B=\infty\)</span> to indicate that the full data are used. 
-$$
+<p>three key parameters: <span class="arithmatex">\(C\)</span>, the fraction of clients that perform computation on each round; <span class="arithmatex">\(E\)</span>, then number of training passes each client makes over its local dataset on each round; and <span class="arithmatex">\(B\)</span>, the local minibatch size used for the client updates. We write <span class="arithmatex">\(B=\infty\)</span> to indicate that the full data are used. </p>
+<div class="arithmatex">\[
 \begin{aligned}
-&amp; \hline \text { Algorithm } 1 \text { FederatedAveraging. The } K \text { clients are } \
-&amp; \text { indexed by } k ; B \text { is the local minibatch size, } E \text { is the number } \
-&amp; \text { of local epochs, and } \eta \text { is the learning rate. } \
-&amp; \hline \text { Server executes: } \
-&amp; \text { initialize } w_0 \
-&amp; \text { for each round } t=1,2, \ldots \text { do } \
-&amp; \quad m \leftarrow \max (C \cdot K, 1) \
-&amp; \quad S_t \leftarrow(\operatorname{random} \text { set of } m \text { clients) } \
-&amp; \quad \text { for each client } k \in S_t \text { in parallel do } \
-&amp; \quad w_{t+1}^k \leftarrow \text { ClientUpdate }\left(k, w_t\right) \
-&amp; \quad w_{t+1} \leftarrow \sum_{k=1}^K \frac{n_k}{n} w_{t+1}^k \
-&amp; \text { ClientUpdate }(k, w): / / \text { Run on client } k \
-&amp; \mathcal{B} \leftarrow\left(\text { split } \mathcal{P}_k \text { into batches of size } B\right) \
-&amp; \text { for each local epoch } i \text { from } 1 \text { to } E \text { do } \
-&amp; \text { for batch } b \in \mathcal{B} \text { do } \
-&amp; \quad w \leftarrow w-\eta \nabla \ell(w ; b) \
+&amp; \hline \text { Algorithm } 1 \text { FederatedAveraging. The } K \text { clients are } \\
+&amp; \text { indexed by } k ; B \text { is the local minibatch size, } E \text { is the number } \\
+&amp; \text { of local epochs, and } \eta \text { is the learning rate. } \\
+&amp; \hline \text { Server executes: } \\
+&amp; \text { initialize } w_0 \\
+&amp; \text { for each round } t=1,2, \ldots \text { do } \\
+&amp; \quad m \leftarrow \max (C \cdot K, 1) \\
+&amp; \quad S_t \leftarrow(\operatorname{random} \text { set of } m \text { clients) } \\
+&amp; \quad \text { for each client } k \in S_t \text { in parallel do } \\
+&amp; \quad w_{t+1}^k \leftarrow \text { ClientUpdate }\left(k, w_t\right) \\
+&amp; \quad w_{t+1} \leftarrow \sum_{k=1}^K \frac{n_k}{n} w_{t+1}^k \\
+&amp; \text { ClientUpdate }(k, w): / / \text { Run on client } k \\
+&amp; \mathcal{B} \leftarrow\left(\text { split } \mathcal{P}_k \text { into batches of size } B\right) \\
+&amp; \text { for each local epoch } i \text { from } 1 \text { to } E \text { do } \\
+&amp; \text { for batch } b \in \mathcal{B} \text { do } \\
+&amp; \quad w \leftarrow w-\eta \nabla \ell(w ; b) \\
 &amp; \text { return } w \text { to server }
 \end{aligned}
-$$</p>
+\]</div>
 <hr />
 <p>Then the algorithm could be (there is no contribution, except the GANs optimization part.)</p>
-<p><span class="arithmatex">\(\overline{\text { Algorithm } 1 \text { Federated Least Squares Generative Adversarial }}\)</span> Networks (Fed-LSGAN)
-Require: Learning rate <span class="arithmatex">\(\alpha\)</span>; Adam hyperparameters <span class="arithmatex">\(\beta_1, \beta_2\)</span>; Local minibatch size <span class="arithmatex">\(m\)</span>; Global epoch <span class="arithmatex">\(W\)</span>; Synchronization interval <span class="arithmatex">\(K\)</span>, Client ratio <span class="arithmatex">\(E\)</span>.
-Require: A global LSGANs model with parameters <span class="arithmatex">\(\left(\theta_g^{\mathcal{S}}, \theta_d^{\mathcal{S}}\right)\)</span> for Discriminator and Generator on central server <span class="arithmatex">\(\mathcal{S}\)</span>; local LSGANs models with parameters <span class="arithmatex">\(\left\{\theta_g, \theta_d\right\}_{i=1}^{N_r}\)</span> on <span class="arithmatex">\(N_r\)</span> clients <span class="arithmatex">\(\{\mathcal{C}\}_{i=1}^{N_r}\)</span>.
-8: Update generator <span class="arithmatex">\(\theta_g^e\)</span> of client <span class="arithmatex">\(e\)</span>
-- Sample batch noise samples <span class="arithmatex">\(\{z\}_{i=1}^m \sim P_Z\)</span>.
-- Update parameters for generator network
-- 
-$$
-\left{\begin{array}{l}
-g_{\theta_g} \leftarrow \nabla_{\theta_g} \frac{1}{m} \sum_{i=1}^m \frac{1}{2}\left(D\left(G\left(z^{(i)}\right)\right)-1\right)^2 \
-\theta_g \leftarrow \theta_g-\alpha \cdot \operatorname{Adam}\left(\theta_g, g_{\theta_g}, \beta_1, \beta_2\right)
-\end{array}\right.
-$$</p>
-<p>11: end for
-12: <span class="arithmatex">\(\quad\)</span> if <span class="arithmatex">\(w \bmod K=0\)</span> then
-13: All selected clients send parameters to server, and the server aggregate <span class="arithmatex">\(\theta^{\mathcal{S}}\)</span> by averaging</p>
-<p>$$
-\theta_g^S \leftarrow \frac{1}{N_e} \sum_{e=1}^{N_e} \theta_g^e, \quad \theta_d^{\mathcal{S}} \leftarrow \frac{1}{N_e} \sum_{e=1}^{N_e} \theta_d^e
-$$
-14: The server send back parameters and clients update local parameters</p>
-<div class="arithmatex">\[
-\left\{\theta_g, \theta_d\right\}_{i=1}^{N_r} \leftarrow\left(\theta_g^{\mathcal{S}}, \theta_d^{\mathcal{S}}\right)
-\]</div>
-<p>15: end if</p>
-<hr />
-<p>Metric: Performance metric</p>
 <p><strong><em>Correlation Analysis:</em></strong> </p>
 <div class="arithmatex">\[
 R(\tau)=\frac{\mathbb{E}\left[\left(S_t-\mu\right)\left(S_{t+\tau}-\mu\right)\right]}{\sigma^2}
@@ -259,26 +232,25 @@ R(\tau)=\frac{\mathbb{E}\left[\left(S_t-\mu\right)\left(S_{t+\tau}-\mu\right)\ri
 \operatorname{CRPS}_l=\frac{1}{M} \sum_{t=1}^M \int_0^1\left(\widehat{F}_{t+l \mid t}(\xi)-\mathbf{1}\left(\xi \geq \xi_{t+l}\right)\right)^2 d \xi
 \]</div>
 <p>where <span class="arithmatex">\(M\)</span> is the total number of scenarios, <span class="arithmatex">\(\widehat{F}_{t+l \mid t}(\xi)\)</span> denotes the cumulative distribution function of normalized scenario, and <span class="arithmatex">\(\mathbf{1}\left(\xi \geq \xi_{t+l}\right)\)</span> is the indicator function for comparing scenarios and observation. </p>
-<p><strong><em>Fréchet inception Distance</em></strong> (FID)
-$$
-\operatorname{FID}\left(P_d, P_g\right)=\left|\mu_d-\mu_g\right|+\operatorname{Tr}\left(\Sigma_d+\Sigma_g-2\left(\Sigma_d \Sigma_g\right)^{\frac{1}{2}}\right)
-$$
-where <span class="arithmatex">\(\mu_d\)</span> and <span class="arithmatex">\(\mu_g\)</span> represent the empirical mean; <span class="arithmatex">\(\Sigma_d\)</span> and <span class="arithmatex">\(\Sigma_g\)</span> are empirical covariance. </p>
-<p><strong><em>Kernel Maximum Mean Discrepancy (MMD):</em></strong> measures the difference between <span class="arithmatex">\(P_d\)</span> and <span class="arithmatex">\(P_g\)</span> for some fixed kernel function <span class="arithmatex">\(k\)</span>, which is defined as
-$$
-\operatorname{MMD}^2\left(P_d, P_g\right)=\underset{\substack{x, x^{\prime} \sim P_d \ y, y^{\prime} \sim P_g}}{ }\left[k\left(x, x^{\prime}\right)-2 k(x, y)+k\left(y, y^{\prime}\right)\right]
-$$
-<strong><em>The 1-Nearest Neighbor classifier</em></strong></p>
-<p><strong><em>Energy Score (ES)</em></strong>
-$$
-\mathrm{ES}=\frac{1}{M} \sum_{i=1}^M\left|\varsigma-\xi_i\right|-\frac{1}{2 M^2} \sum_{i=1}^M \sum_{j=1}^M\left|\xi_i-\xi_j\right|
-$$
-<span class="arithmatex">\(\varsigma\)</span> is the real renewable power output, <span class="arithmatex">\(\xi_i\)</span> is the <span class="arithmatex">\(i\)</span>-th generated time series scenario and <span class="arithmatex">\(M\)</span> denotes the number of scenarios. </p>
-<p>Pearson correlation coefficient <span class="arithmatex">\(\rho\)</span> of two time series <span class="arithmatex">\(S_i\)</span> and <span class="arithmatex">\(S_j\)</span> is 
-$$
-\rho\left(S_i, S_j\right)=\frac{\sum_{i=1}^n\left(S_i-\bar{S}<em>i\right)\left(S_j-\bar{S}_j\right)}{\sqrt{\sum</em>{i=1}^n\left(S_i-\bar{S}<em>i\right)^2} \sqrt{\sum</em>{i=1}^n\left(S_j-\bar{S}_j\right)^2}}
-$$</p>
-<h3 id="_1"><a class="headerlink" href="#_1" title="Permanent link">#</a></h3>
+<p><strong><em>Fréchet inception Distance</em></strong> (FID)</p>
+<div class="arithmatex">\[
+\operatorname{FID}\left(P_d, P_g\right)=\left\|\mu_d-\mu_g\right\|+\operatorname{Tr}\left(\Sigma_d+\Sigma_g-2\left(\Sigma_d \Sigma_g\right)^{\frac{1}{2}}\right)
+\]</div>
+<p>where <span class="arithmatex">\(\mu_d\)</span> and <span class="arithmatex">\(\mu_g\)</span> represent the empirical mean; <span class="arithmatex">\(\Sigma_d\)</span> and <span class="arithmatex">\(\Sigma_g\)</span> are empirical covariance. </p>
+<p><strong><em>Kernel Maximum Mean Discrepancy (MMD):</em></strong> measures the difference between <span class="arithmatex">\(P_d\)</span> and <span class="arithmatex">\(P_g\)</span> for some fixed kernel function <span class="arithmatex">\(k\)</span>, which is defined as</p>
+<div class="arithmatex">\[
+\operatorname{MMD}^2\left(P_d, P_g\right)=\underset{\substack{x, x^{\prime} \sim P_d \\ y, y^{\prime} \sim P_g}}{ }\left[k\left(x, x^{\prime}\right)-2 k(x, y)+k\left(y, y^{\prime}\right)\right]
+\]</div>
+<p><strong><em>The 1-Nearest Neighbor classifier</em></strong></p>
+<p><strong><em>Energy Score (ES)</em></strong></p>
+<div class="arithmatex">\[
+\mathrm{ES}=\frac{1}{M} \sum_{i=1}^M\left\|\varsigma-\xi_i\right\|-\frac{1}{2 M^2} \sum_{i=1}^M \sum_{j=1}^M\left\|\xi_i-\xi_j\right\|
+\]</div>
+<p><span class="arithmatex">\(\varsigma\)</span> is the real renewable power output, <span class="arithmatex">\(\xi_i\)</span> is the <span class="arithmatex">\(i\)</span>-th generated time series scenario and <span class="arithmatex">\(M\)</span> denotes the number of scenarios. </p>
+<p>Pearson correlation coefficient <span class="arithmatex">\(\rho\)</span> of two time series <span class="arithmatex">\(S_i\)</span> and <span class="arithmatex">\(S_j\)</span> is </p>
+<div class="arithmatex">\[
+\rho\left(S_i, S_j\right)=\frac{\sum_{i=1}^n\left(S_i-\bar{S}_i\right)\left(S_j-\bar{S}_j\right)}{\sqrt{\sum_{i=1}^n\left(S_i-\bar{S}_i\right)^2} \sqrt{\sum_{i=1}^n\left(S_j-\bar{S}_j\right)^2}}
+\]</div>
 
   <br>
     
